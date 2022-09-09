@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package com.protos;
+
+option java_multiple_files = true;
+
+service TeacherStudentService {
+
+  rpc getStudent(Student) returns (Student) {}
+
+}
+
+message Teacher {
+  int32 teacher_id = 1;
+  string name = 2;
+  string subject = 3;
+}
+
+message Student {
+  int32 student_id = 1;
+  string name = 2;
+  int32 course = 3;
+  int32 teacher_id = 4;
+}
