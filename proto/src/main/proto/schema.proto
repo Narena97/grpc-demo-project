@@ -12,6 +12,8 @@ service TeacherStudentService {
 
   rpc getStudentFromTheLastCourse(stream Student) returns (Student) {}
 
+  rpc getStudentsByTeacherSubject(stream Student) returns (stream Student) {}
+
 }
 
 message Teacher {

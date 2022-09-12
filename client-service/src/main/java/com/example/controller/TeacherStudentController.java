@@ -31,4 +31,9 @@ public class TeacherStudentController {
         return teacherStudentService.getStudentFromTheLastCourse();
     }
 
+    @GetMapping("/student/teacher/{subject}")
+    public List<Map<Descriptors.FieldDescriptor, Object>> getStudentsByTeacherSubject(@PathVariable String subject) throws InterruptedException {
+        return teacherStudentService.getStudentsByTeacherSubject(subject);
+    }
+
 }

@@ -80,4 +80,34 @@ public class TeacherStudentClientService {
         return await ? response : Collections.emptyMap();
     }
 
+    public List<Map<Descriptors.FieldDescriptor, Object>> getStudentsByTeacherSubject(String subject) throws InterruptedException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        List<Map<Descriptors.FieldDescriptor, Object>> response = new ArrayList<>();
+        StreamObserver<Student> responseObserver = asynchronousClient.getStudentsByTeacherSubject(new StreamObserver<>() {
+            @Override
+            public void onNext(Student student) {
+                response.add(student.getAllFields());
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                countDownLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                countDownLatch.countDown();
+            }
+        });
+
+        TempDb.getTeachers()
+                .stream()
+                .filter(teacher -> teacher.getSubject().equalsIgnoreCase(subject))
+                .forEach(teacher -> responseObserver.onNext(Student.newBuilder().setTeacherId(teacher.getTeacherId()).build()));
+        responseObserver.onCompleted();
+
+        boolean await = countDownLatch.await(1, TimeUnit.MINUTES);
+        return await ? response : Collections.emptyList();
+    }
+
 }

@@ -6,6 +6,9 @@ import com.protos.TeacherStudentServiceGrpc;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @GrpcService
 public class TeacherStudentService extends TeacherStudentServiceGrpc.TeacherStudentServiceImplBase {
 
@@ -54,4 +57,31 @@ public class TeacherStudentService extends TeacherStudentServiceGrpc.TeacherStud
             }
         };
     }
+
+    @Override
+    public StreamObserver<Student> getStudentsByTeacherSubject(StreamObserver<Student> responseObserver) {
+        return new StreamObserver<>() {
+            final List<Student> students = new ArrayList<>();
+
+            @Override
+            public void onNext(Student student) {
+                TempDb.getStudents()
+                        .stream()
+                        .filter(studentFromDb -> student.getTeacherId() == studentFromDb.getTeacherId())
+                        .forEach(students::add);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                responseObserver.onError(throwable);
+            }
+
+            @Override
+            public void onCompleted() {
+                students.forEach(responseObserver::onNext);
+                responseObserver.onCompleted();
+            }
+        };
+    }
+
 }
