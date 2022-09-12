@@ -28,4 +28,30 @@ public class TeacherStudentService extends TeacherStudentServiceGrpc.TeacherStud
         responseObserver.onCompleted();
     }
 
+    @Override
+    public StreamObserver<Student> getStudentFromTheLastCourse(StreamObserver<Student> responseObserver) {
+        return new StreamObserver<>() {
+            Student studentFromTheLastCourse = null;
+            int courseTrack = 1;
+
+            @Override
+            public void onNext(Student student) {
+                if (student.getCourse() > courseTrack) {
+                    courseTrack = student.getCourse();
+                    studentFromTheLastCourse = student;
+                }
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                responseObserver.onError(throwable);
+            }
+
+            @Override
+            public void onCompleted() {
+                responseObserver.onNext(studentFromTheLastCourse);
+                responseObserver.onCompleted();
+            }
+        };
+    }
 }

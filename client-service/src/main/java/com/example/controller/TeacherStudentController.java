@@ -26,4 +26,9 @@ public class TeacherStudentController {
         return teacherStudentService.getStudentsByTeacher(Integer.parseInt(teacherId));
     }
 
+    @GetMapping("/student")
+    public Map<String, Map<Descriptors.FieldDescriptor, Object>> getStudentFromTheLastCourse() throws InterruptedException {
+        return teacherStudentService.getStudentFromTheLastCourse();
+    }
+
 }
