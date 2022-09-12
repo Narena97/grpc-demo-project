@@ -11,9 +11,9 @@ public class TempDb {
     public static List<Teacher> getTeachers() {
         return new ArrayList<Teacher>() {
             {
-                add(Teacher.newBuilder().setTeacherId(1).setName("Sam").setSubject("Math").build());
-                add(Teacher.newBuilder().setTeacherId(2).setName("Clay").setSubject("Biology").build());
-                add(Teacher.newBuilder().setTeacherId(3).setName("Martin").setSubject("Chemistry").build());
+                add(Teacher.newBuilder().setTeacherId(1).setName("Sam").setSubject("Math").setStudentId(1).build());
+                add(Teacher.newBuilder().setTeacherId(2).setName("Clay").setSubject("Biology").setStudentId(3).build());
+                add(Teacher.newBuilder().setTeacherId(3).setName("Martin").setSubject("Chemistry").setStudentId(5).build());
             }
         };
     }

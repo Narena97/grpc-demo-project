@@ -6,7 +6,9 @@ option java_multiple_files = true;
 
 service TeacherStudentService {
 
-  rpc getStudent(Student) returns (Student) {}
+  rpc getTeacher(Teacher) returns (Teacher) {}
+
+  rpc getStudentsByTeacher(Teacher) returns (stream Student) {}
 
 }
 
@@ -14,6 +16,7 @@ message Teacher {
   int32 teacher_id = 1;
   string name = 2;
   string subject = 3;
+  int32 student_id = 4;
 }
 
 message Student {
